@@ -24,9 +24,9 @@ const initialState: AlbumState = {
 export const listAlbumsAsync = createAsyncThunk(
   'album/listAlbums',
   async (payload: any) => {
-    const {pagination, filter, sorter } = payload
-    const { pageSize: limit, current, total } = pagination;
-    const options = { filter, sorter };
+    const {pagination, filter } = payload
+    const { pageSize: limit, current } = pagination;
+    const options = { filter };
     const offset = ( current-1 ) * limit;
     const response = await albumApi.listAlbums(limit, offset, options);
     return response.data;
@@ -57,7 +57,6 @@ export const albumSlice = createSlice({
 export const selectAlbums = (state: RootState) => {
   const { album } = state
   const { pagination, albums } = album
-  console.log('XXXXX',{ albums, pagination} )
   return { albums, pagination};
   
 };

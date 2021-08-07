@@ -1,29 +1,33 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { listAlbumsAsync, selectAlbums } from './albumSlice';
 import styles from './Album.module.css';
 import { Table } from 'antd';
 import { Input, Space } from 'antd';
-import { string } from 'yargs';
 
 
 export function Album() {
   const  { albums, pagination } = useAppSelector(selectAlbums);
   const dispatch = useAppDispatch();
 
-  useEffect( () => { dispatch(listAlbumsAsync({})) }, [] )
+  const [filter, setFilter] = useState('');
+
+  useEffect( () => { dispatch(listAlbumsAsync({pagination})) }, [] )
 
   const columns = [
-    { title: 'Title', dataIndex: 'title', sorter: true, width: '70%' }
+    { title: 'Title', dataIndex: 'title', key:'title', width: '70%' }
   ]
 
   const loading = false;
   const handleTableChange = (pagination = {}) => {
-    dispatch(listAlbumsAsync({pagination}))
+    dispatch(listAlbumsAsync({pagination, filter}))
   }
 
   const { Search } = Input;
-  const onSearch = (value: string) => console.log(value); 
+  const onSearch = (value: string) => {
+    setFilter(value)
+    dispatch(listAlbumsAsync({pagination, filter}))
+  }; 
 
   return (
     <div>

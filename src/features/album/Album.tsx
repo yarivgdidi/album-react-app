@@ -8,7 +8,7 @@ import { string } from 'yargs';
 
 
 export function Album() {
-  const  albums = useAppSelector(selectAlbums);
+  const  { albums, pagination } = useAppSelector(selectAlbums);
   const dispatch = useAppDispatch();
 
   useEffect( () => { dispatch(listAlbumsAsync({})) }, [] )
@@ -16,13 +16,10 @@ export function Album() {
   const columns = [
     { title: 'Title', dataIndex: 'title', sorter: true, width: '70%' }
   ]
-  const pagination = {
-    current: 1,
-    pageSize: 10,
-  }
+
   const loading = false;
-  const handleTableChange = (pagination, filters, sorter) => {
-    dispatch(listAlbumsAsync({pagination, filters, sorter}))
+  const handleTableChange = (pagination = {}) => {
+    dispatch(listAlbumsAsync({pagination}))
   }
 
   const { Search } = Input;

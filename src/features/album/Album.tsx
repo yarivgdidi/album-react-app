@@ -1,35 +1,44 @@
-
-
+import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import {
-  listAlbumsAsync,
-  selectAlbums
-} from './albumSlice';
+import { listAlbumsAsync, selectAlbums } from './albumSlice';
 import styles from './Album.module.css';
+import { Table } from 'antd';
+import { Input, Space } from 'antd';
+import { string } from 'yargs';
+
 
 export function Album() {
   const  albums = useAppSelector(selectAlbums);
   const dispatch = useAppDispatch();
 
-  const getTitle = () => {
-    console.log(albums);
-    return albums.map(album => (<div key={album._id}>{album.title}</div>))
+  useEffect( () => { dispatch(listAlbumsAsync({})) }, [] )
+
+  const columns = [
+    { title: 'Title', dataIndex: 'title', sorter: true, width: '70%' }
+  ]
+  const pagination = {
+    current: 1,
+    pageSize: 10,
   }
+  const loading = false;
+  const handleTableChange = (pagination, filters, sorter) => {
+    dispatch(listAlbumsAsync({pagination, filters, sorter}))
+  }
+
+  const { Search } = Input;
+  const onSearch = (value: string) => console.log(value); 
+
   return (
     <div>
-  
-        <button
-          className={styles.asyncButton}
-          onClick={() => dispatch(listAlbumsAsync({}))}
-        >
-          Get Albums
-        </button>
-        
-    
-      <div>
-    
-        { getTitle() }
-      </div>
+      <Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} />
+      <Table
+        columns={columns}
+        rowKey={album => album._id}
+        dataSource={albums}
+        pagination={pagination}
+        loading={loading}
+        onChange={handleTableChange}
+      />
     </div>
   );
 }

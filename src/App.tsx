@@ -1,4 +1,3 @@
-import { Counter } from './features/counter/Counter';
 import { Album } from './features/album/Album';
 import './App.css';
 

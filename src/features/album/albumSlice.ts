@@ -9,7 +9,7 @@ export interface AlbumState {
   status: 'idle' | 'loading' | 'failed';
 }
 const initialState: AlbumState = {
-  albums: [{title: 'Yariv', userId:1, _id: '', id: '1'}, ],
+  albums: [],
   status: 'idle',
 };
 

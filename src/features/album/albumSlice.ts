@@ -26,9 +26,8 @@ export const listAlbumsAsync = createAsyncThunk(
   async (payload: any) => {
     const {pagination, filter } = payload
     const { pageSize: limit, current } = pagination;
-    const options = { filter };
     const offset = ( current-1 ) * limit;
-    const response = await albumApi.listAlbums(limit, offset, options);
+    const response = await albumApi.listAlbums(limit, offset, filter);
     return response.data;
   }
 );

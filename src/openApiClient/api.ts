@@ -282,10 +282,11 @@ export const AlbumApiAxiosParamCreator = function (configuration?: Configuration
          * @summary List albums
          * @param {number} [limit] maximum number of results to return
          * @param {number} [offset] offset from beginning of list (for pagination)
+         * @param {string} [filter] search filter
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listAlbums: async (limit?: number, offset?: number, options: any = {}): Promise<RequestArgs> => {
+        listAlbums: async (limit?: number, offset?: number, filter?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/album`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -304,6 +305,10 @@ export const AlbumApiAxiosParamCreator = function (configuration?: Configuration
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
             }
 
 
@@ -445,11 +450,12 @@ export const AlbumApiFp = function(configuration?: Configuration) {
          * @summary List albums
          * @param {number} [limit] maximum number of results to return
          * @param {number} [offset] offset from beginning of list (for pagination)
+         * @param {string} [filter] search filter
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listAlbums(limit?: number, offset?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Album>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listAlbums(limit, offset, options);
+        async listAlbums(limit?: number, offset?: number, filter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Album>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listAlbums(limit, offset, filter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -521,11 +527,12 @@ export const AlbumApiFactory = function (configuration?: Configuration, basePath
          * @summary List albums
          * @param {number} [limit] maximum number of results to return
          * @param {number} [offset] offset from beginning of list (for pagination)
+         * @param {string} [filter] search filter
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listAlbums(limit?: number, offset?: number, options?: any): AxiosPromise<Array<Album>> {
-            return localVarFp.listAlbums(limit, offset, options).then((request) => request(axios, basePath));
+        listAlbums(limit?: number, offset?: number, filter?: string, options?: any): AxiosPromise<Array<Album>> {
+            return localVarFp.listAlbums(limit, offset, filter, options).then((request) => request(axios, basePath));
         },
         /**
          * List all albums with user access
@@ -600,12 +607,13 @@ export class AlbumApi extends BaseAPI {
      * @summary List albums
      * @param {number} [limit] maximum number of results to return
      * @param {number} [offset] offset from beginning of list (for pagination)
+     * @param {string} [filter] search filter
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AlbumApi
      */
-    public listAlbums(limit?: number, offset?: number, options?: any) {
-        return AlbumApiFp(this.configuration).listAlbums(limit, offset, options).then((request) => request(this.axios, this.basePath));
+    public listAlbums(limit?: number, offset?: number, filter?: string, options?: any) {
+        return AlbumApiFp(this.configuration).listAlbums(limit, offset, filter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

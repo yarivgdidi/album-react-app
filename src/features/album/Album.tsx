@@ -12,7 +12,10 @@ export function Album() {
 
   const [filter, setFilter] = useState('');
 
-  useEffect( () => { dispatch(listAlbumsAsync({pagination})) }, [] )
+  useEffect( () => { 
+    const options = filter && filter !== '' ? { pagination, filter } : { pagination }
+    dispatch(listAlbumsAsync(options)) 
+  }, [] )
 
   const columns = [
     { title: 'Title', dataIndex: 'title', key:'title', width: '70%' }
@@ -20,13 +23,15 @@ export function Album() {
 
   const loading = false;
   const handleTableChange = (pagination = {}) => {
-    dispatch(listAlbumsAsync({pagination, filter}))
+    const options = filter && filter !== '' ? { pagination, filter } : { pagination }
+    dispatch(listAlbumsAsync(options))
   }
 
   const { Search } = Input;
   const onSearch = (value: string) => {
     setFilter(value)
-    dispatch(listAlbumsAsync({pagination, filter}))
+    const options = value && value !== '' ? { pagination, filter: value } : { pagination }
+    dispatch(listAlbumsAsync(options))
   }; 
 
   return (

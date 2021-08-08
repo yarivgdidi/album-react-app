@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { listAlbumsAsync, selectAlbums } from './albumSlice';
-import styles from './Album.module.css';
-import { Table } from 'antd';
-import { Input, Space } from 'antd';
+import styled from 'styled-components';
+import { Table, Input, Space, Button  } from 'antd';
+import { StarOutlined, StarFilled } from '@ant-design/icons';
+
 import { removeFavoriteAsync, addFavoriteAsync } from '../favorite/favoriteSlice';
 
 
@@ -46,11 +47,11 @@ export function Album() {
   }
 
   const columns = [
-    { title: 'Title', dataIndex: 'title', key:'title', width: '70%' },
-    { title: '', width: '30%', 
+    { title: 'Title', dataIndex: 'title', key:'title' },
+    { title: '',
       render: (text:string, record:any, index:number) => 
         <div>
-           < button onClick = {(e:any) => {handleFavoriteButtonClicked(record)} } > {record.favorite ? 'Remove'  : 'Add'} </button> 
+           <Button type="text" shape="circle" icon={record.favorite ? <StarFilled /> : <StarOutlined /> } onClick = {(e:any) => {handleFavoriteButtonClicked(record)} } > </Button> 
         </div>
     }
 
@@ -64,18 +65,50 @@ export function Album() {
     const options = value && value !== '' ? { pagination, filter: value } : { pagination }
     dispatch(listAlbumsAsync(options))
   }; 
+  const RoundedSearch = styled(Search)`
+  .ant-input {
+    border-radius: 20px;
+    height: 40px;
+  }
+  .ant-input-group-addon .ant-btn.ant-btn-icon-only.ant-input-search-button {
+    border-radius: 0 20px 20px 0;
+    height: 40px
+  }
+`;
+
+const RoundedTable = styled(Table)`
+  .ant-table {
+    width: 100%;
+    max-width: 600px; 
+    border: 1px solid #EEE;
+    border-radius: 20px;
+  }
+  .ant-table tr {
+    height: 40px;
+  }
+  .ant-table tr td {
+    padding 0 16px;
+  }
+`;
 
   return (
-    <div>
-      <Search placeholder="input search text" onSearch={onSearch} style={{ width: 200 }} />
-      <Table
-        columns={columns}
-        rowKey={album => album._id}
-        dataSource={albums}
-        pagination={pagination}
-        loading={loading}
-        onChange={handleTableChange}
-      />
-    </div>
+    <Space align='start' direction='vertical' size={[10,10]}>
+      <Space align='start' direction='vertical' >
+        <RoundedSearch placeholder="input search text" onSearch={onSearch} style={{ width:200 }} />
+      </Space>
+      <Space >
+        <RoundedTable
+       
+          showHeader={false}
+          columns={columns}
+          rowKey={(album:any) => album._id}
+          dataSource={albums}
+          pagination={pagination}
+          loading={loading}
+          onChange={handleTableChange}
+        />
+     </Space>
+      
+    </Space>
   );
 }

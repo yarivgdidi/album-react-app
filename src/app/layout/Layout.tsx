@@ -20,7 +20,7 @@ function Layout(){
                                 defaultActiveKey={match.params.tab}
                                 onChange={key => { history.push(`/${key}`);}}
                         >
-                            <TabPane tab="Albums" key="albums">
+                            <TabPane tab="Albums" key="search">
                                 <div className='container'>
                                     <AlbumPage />
                                 </div>    

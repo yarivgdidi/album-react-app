@@ -4,6 +4,7 @@ import { listAlbumsAsync, selectAlbums } from './albumSlice';
 import styles from './Album.module.css';
 import { Table } from 'antd';
 import { Input, Space } from 'antd';
+import { removeFavoriteAsync, addFavoriteAsync } from '../favorite/favoriteSlice';
 
 
 export function Album() {
@@ -13,19 +14,54 @@ export function Album() {
   const [filter, setFilter] = useState('');
 
   useEffect( () => { 
-    const options = filter && filter !== '' ? { pagination, filter } : { pagination }
-    dispatch(listAlbumsAsync(options)) 
-  }, [] )
+    loadAlbumTable();
+    // const options = filter && filter !== '' ? { pagination, filter } : { pagination }
+    // dispatch(listAlbumsAsync(options)) 
+  }, [] );
+
+  const handleTableChange = (pagination = {}) => {
+    loadAlbumTable(pagination)
+    // const options = filter && filter !== '' ? { pagination, filter } : { pagination }
+    // dispatch(listAlbumsAsync(options))
+  }
+
+  const loadAlbumTable = ( newPagination? : any) => {
+    const options: any = {};
+    if (filter && filter !== '') {
+      options.filter = filter
+    }
+    if (newPagination) {
+      options.pagination = newPagination;
+    }
+    else {
+      options.pagination = pagination;
+    }
+    dispatch(listAlbumsAsync(options))
+  }
+
+  const handleFavoriteButtonClicked = async (record:any )=> {
+    if (record.favorite) {
+      const response = await dispatch(removeFavoriteAsync(record.favorite))
+      loadAlbumTable()
+    } else {
+      const response = await dispatch(addFavoriteAsync(record._id))
+      loadAlbumTable()
+    }
+  }
 
   const columns = [
-    { title: 'Title', dataIndex: 'title', key:'title', width: '70%' }
+    { title: 'Title', dataIndex: 'title', key:'title', width: '70%' },
+    { title: '', width: '30%', 
+      render: (text:string, record:any, index:number) => 
+        <div>
+           < button onClick = {(e:any) => {handleFavoriteButtonClicked(record)} } > {record.favorite ? 'Remove'  : 'Add'} </button> 
+        </div>
+    }
+
   ]
 
   const loading = false;
-  const handleTableChange = (pagination = {}) => {
-    const options = filter && filter !== '' ? { pagination, filter } : { pagination }
-    dispatch(listAlbumsAsync(options))
-  }
+ 
 
   const { Search } = Input;
   const onSearch = (value: string) => {

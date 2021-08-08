@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-import { albumApi } from './albumAPI';
+import { albumApi } from './axiosApi';
 import { Album } from '../../openApiClient';
 import { TablePaginationConfig } from 'antd';
 

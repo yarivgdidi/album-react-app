@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import { listAlbumsAsync, selectAlbums } from './albumSlice';
 import styles from './Album.module.css';
 import { Table } from 'antd';
@@ -15,14 +15,10 @@ export function Album() {
 
   useEffect( () => { 
     loadAlbumTable();
-    // const options = filter && filter !== '' ? { pagination, filter } : { pagination }
-    // dispatch(listAlbumsAsync(options)) 
   }, [] );
 
   const handleTableChange = (pagination = {}) => {
     loadAlbumTable(pagination)
-    // const options = filter && filter !== '' ? { pagination, filter } : { pagination }
-    // dispatch(listAlbumsAsync(options))
   }
 
   const loadAlbumTable = ( newPagination? : any) => {
@@ -61,8 +57,7 @@ export function Album() {
   ]
 
   const loading = false;
- 
-
+  
   const { Search } = Input;
   const onSearch = (value: string) => {
     setFilter(value)

@@ -1,7 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
-import albumReducer from '../features/album/albumSlice';
-import favoriteReducer from '../features/favorite/favoriteSlice';
+import counterReducer from './features/counter/counterSlice';
+import albumReducer from './features/album/albumSlice';
+import favoriteReducer from './features/favorite/favoriteSlice';
 export const store = configureStore({
   reducer: {
     album: albumReducer,

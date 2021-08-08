@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
+import { RootState } from '../../store';
 
 import { favoriteApi } from '../album/axiosApi';
-import { Favorite, NewFavorite } from '../../openApiClient';
+import { Favorite, NewFavorite } from '../../../openApiClient';
 
 export interface FavoriteState {
   status: 'idle' | 'loading' | 'failed';

@@ -1,4 +1,4 @@
-import { AlbumApi, FavoriteApi } from '../../openApiClient';
+import { AlbumApi, FavoriteApi } from '../../../openApiClient';
 import axios from 'axios'
 import { AxiosInstance } from 'axios';
 

@@ -5,9 +5,8 @@ import {
     Switch
   } from "react-router-dom";
 import { Tabs } from 'antd';
-import { Album }  from '../../features/album/Album'
-
-import './layout.css';
+import './layout.css'
+import { AlbumPage, FavoritePage} from '../pages/'
 const { TabPane } = Tabs;
 function Layout(){
     return (
@@ -21,17 +20,17 @@ function Layout(){
                                 defaultActiveKey={match.params.tab}
                                 onChange={key => { history.push(`/${key}`);}}
                         >
-                        <TabPane tab="Albums" key="albums">
-                            <div className='container'>
-                                <Album />
-                            </div>    
-                        </TabPane>
-                        <TabPane tab="Favorites" key="favorites">
-                            <div className='container'>
-                                Content of Tab Pane 2
-                            </div>
-                        </TabPane>
-                    </Tabs>
+                            <TabPane tab="Albums" key="albums">
+                                <div className='container'>
+                                    <AlbumPage />
+                                </div>    
+                            </TabPane>
+                            <TabPane tab="Favorites" key="favorites">
+                                <div className='container'>
+                                    <FavoritePage />
+                                </div>
+                            </TabPane>
+                        </Tabs>
                     )
                 }}
                 />

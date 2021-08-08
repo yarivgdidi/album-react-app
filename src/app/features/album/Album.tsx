@@ -8,11 +8,12 @@ import { StarOutlined, StarFilled } from '@ant-design/icons';
 import { removeFavoriteAsync, addFavoriteAsync } from '../favorite/favoriteSlice';
 
 
-export function Album() {
+export function Album(props?:any) {
   const  { albums, pagination } = useAppSelector(selectAlbums);
   const dispatch = useAppDispatch();
 
   const [filter, setFilter] = useState('');
+  const { isFavorites } = props;
 
   useEffect( () => { 
     loadAlbumTable();

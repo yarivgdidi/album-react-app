@@ -32,6 +32,17 @@ export const listAlbumsAsync = createAsyncThunk(
   }
 );
 
+export const listFavoritesAsync = createAsyncThunk(
+  'album/listFavoritesAlbums',
+  async (payload: any) => {
+    const {pagination, filter } = payload
+    const { pageSize: limit, current } = pagination;
+    const offset = ( current-1 ) * limit;
+    const response = await albumApi.listFavoritesAlbums(limit, offset, filter);
+    return response.data;
+  }
+);
+
 export const albumSlice = createSlice({
   name: 'album',
   initialState,
@@ -44,6 +55,16 @@ export const albumSlice = createSlice({
         state.status = 'loading';
       })  
       .addCase(listAlbumsAsync.fulfilled, (state, action) => {
+        const  { albums = [], total = 0, limit = 10, offset = 0}  = { ...action.payload };
+        const current = offset/limit + 1;
+        state.pagination =  {pageSize: limit, current, total};
+        state.albums = albums;
+        state.status = 'idle';
+      })
+      .addCase(listFavoritesAsync.pending, (state) => {
+        state.status = 'loading';
+      })  
+      .addCase(listFavoritesAsync.fulfilled, (state, action) => {
         const  { albums = [], total = 0, limit = 10, offset = 0}  = { ...action.payload };
         const current = offset/limit + 1;
         state.pagination =  {pageSize: limit, current, total};

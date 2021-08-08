@@ -3,7 +3,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { listAlbumsAsync, selectAlbums, selectFavoritesAlbums, listFavoritesAlbumsAsync } from './albumSlice';
 import styled from 'styled-components';
 import { Table, Input, Space, Button  } from 'antd';
-import { StarOutlined, StarFilled } from '@ant-design/icons';
+import { StarOutlined, StarFilled ,CloseOutlined} from '@ant-design/icons';
 
 import { removeFavoriteAsync, addFavoriteAsync } from '../favorite/favoriteSlice';
 
@@ -110,7 +110,9 @@ export function Album(props?:any) {
     { title: '', fixed: true, width: '10%',
       render: (text:string, record:any, index:number) => 
         <div>
-           <Button type="text" shape="circle" icon={record.favorite ? <StarFilled /> : <StarOutlined /> } onClick = {(e:any) => {handleFavoriteButtonClicked(record)} } > </Button> 
+           <Button type="text" shape="circle" icon={
+             record.favorite ? isFavorites ? <CloseOutlined />: <StarFilled /> :  <StarOutlined /> 
+             } onClick = {(e:any) => {handleFavoriteButtonClicked(record)} } > </Button> 
         </div>
     }
 
@@ -120,8 +122,14 @@ export function Album(props?:any) {
   
   const onSearch = (value: string) => {
     setFilter(value)
-    const options = value && value !== '' ? { pagination, filter: value } : { pagination }
-    dispatch(listAlbumsAsync(options))
+    if (isFavorites) {
+      const options = value && value !== '' ? { pagination:favoritesPagination, filter: value.trim() } : { pagination:favoritesPagination }
+      dispatch(listFavoritesAlbumsAsync(options))
+    } else {
+      const options = value && value !== '' ? { pagination, filter: value.trim() } : { pagination }
+      dispatch(listAlbumsAsync(options))
+    }
+   
   }; 
  
 

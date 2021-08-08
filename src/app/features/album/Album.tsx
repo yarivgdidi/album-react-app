@@ -47,8 +47,8 @@ export function Album() {
   }
 
   const columns = [
-    { title: 'Title', dataIndex: 'title', key:'title' },
-    { title: '',
+    { title: 'Title', dataIndex: 'title', key:'title',fixed: true, width: '90%'},
+    { title: '', fixed: true, width: '10%',
       render: (text:string, record:any, index:number) => 
         <div>
            <Button type="text" shape="circle" icon={record.favorite ? <StarFilled /> : <StarOutlined /> } onClick = {(e:any) => {handleFavoriteButtonClicked(record)} } > </Button> 
@@ -78,16 +78,22 @@ export function Album() {
 
 const RoundedTable = styled(Table)`
   .ant-table {
-    width: 100%;
+    width: 100vw;
     max-width: 600px; 
     border: 1px solid #EEE;
     border-radius: 20px;
   }
+  .ant-table .ant-table-content {
+    height: calc( 100vh - 235px);
+    overflow: scroll;
+  }
   .ant-table tr {
     height: 40px;
+    background: none;
   }
   .ant-table tr td {
     padding 0 16px;
+    background: none;
   }
 `;
 

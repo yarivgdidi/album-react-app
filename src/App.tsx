@@ -1,4 +1,3 @@
-import { Album } from './app/features/album/Album';
 import Layout from './app/layout/Layout';
 import './App.css';
 

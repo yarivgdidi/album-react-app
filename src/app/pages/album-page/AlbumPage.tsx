@@ -1,4 +1,4 @@
 import { Album } from '../../features/album/Album'
 export function AlbumPage() {
-    return <Album/>
+    return <Album isFavorites={false}/>
 }

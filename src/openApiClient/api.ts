@@ -327,10 +327,11 @@ export const AlbumApiAxiosParamCreator = function (configuration?: Configuration
          * @summary List favorites albums
          * @param {number} [limit] maximum number of results to return
          * @param {number} [offset] offset from beginning of list (for pagination)
+         * @param {string} [filter] search filter
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listFavoritesAlbums: async (limit?: number, offset?: number, options: any = {}): Promise<RequestArgs> => {
+        listFavoritesAlbums: async (limit?: number, offset?: number, filter?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/album/favorites`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -349,6 +350,10 @@ export const AlbumApiAxiosParamCreator = function (configuration?: Configuration
 
             if (offset !== undefined) {
                 localVarQueryParameter['offset'] = offset;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
             }
 
 
@@ -463,11 +468,12 @@ export const AlbumApiFp = function(configuration?: Configuration) {
          * @summary List favorites albums
          * @param {number} [limit] maximum number of results to return
          * @param {number} [offset] offset from beginning of list (for pagination)
+         * @param {string} [filter] search filter
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listFavoritesAlbums(limit?: number, offset?: number, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Album>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listFavoritesAlbums(limit, offset, options);
+        async listFavoritesAlbums(limit?: number, offset?: number, filter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Album>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listFavoritesAlbums(limit, offset, filter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -539,11 +545,12 @@ export const AlbumApiFactory = function (configuration?: Configuration, basePath
          * @summary List favorites albums
          * @param {number} [limit] maximum number of results to return
          * @param {number} [offset] offset from beginning of list (for pagination)
+         * @param {string} [filter] search filter
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listFavoritesAlbums(limit?: number, offset?: number, options?: any): AxiosPromise<Array<Album>> {
-            return localVarFp.listFavoritesAlbums(limit, offset, options).then((request) => request(axios, basePath));
+        listFavoritesAlbums(limit?: number, offset?: number, filter?: string, options?: any): AxiosPromise<Array<Album>> {
+            return localVarFp.listFavoritesAlbums(limit, offset, filter, options).then((request) => request(axios, basePath));
         },
         /**
          * Updates album by ID 
@@ -621,12 +628,13 @@ export class AlbumApi extends BaseAPI {
      * @summary List favorites albums
      * @param {number} [limit] maximum number of results to return
      * @param {number} [offset] offset from beginning of list (for pagination)
+     * @param {string} [filter] search filter
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof AlbumApi
      */
-    public listFavoritesAlbums(limit?: number, offset?: number, options?: any) {
-        return AlbumApiFp(this.configuration).listFavoritesAlbums(limit, offset, options).then((request) => request(this.axios, this.basePath));
+    public listFavoritesAlbums(limit?: number, offset?: number, filter?: string, options?: any) {
+        return AlbumApiFp(this.configuration).listFavoritesAlbums(limit, offset, filter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

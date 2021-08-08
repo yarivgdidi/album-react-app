@@ -7,13 +7,21 @@ import { TablePaginationConfig } from 'antd';
 
 export interface AlbumState {
   albums: Album[];
+  favoritesAlbums: Album[];
   status: 'idle' | 'loading' | 'failed';
   pagination: TablePaginationConfig,
+  favoritesPagination: TablePaginationConfig,
 }
 
 const initialState: AlbumState = {
   albums: [],
+  favoritesAlbums: [],
   pagination: {
+    current: 1,
+    pageSize: 10,
+    total: 0
+  },
+  favoritesPagination: {
     current: 1,
     pageSize: 10,
     total: 0
@@ -32,7 +40,7 @@ export const listAlbumsAsync = createAsyncThunk(
   }
 );
 
-export const listFavoritesAsync = createAsyncThunk(
+export const listFavoritesAlbumsAsync = createAsyncThunk(
   'album/listFavoritesAlbums',
   async (payload: any) => {
     const {pagination, filter } = payload
@@ -61,14 +69,14 @@ export const albumSlice = createSlice({
         state.albums = albums;
         state.status = 'idle';
       })
-      .addCase(listFavoritesAsync.pending, (state) => {
+      .addCase(listFavoritesAlbumsAsync.pending, (state) => {
         state.status = 'loading';
       })  
-      .addCase(listFavoritesAsync.fulfilled, (state, action) => {
-        const  { albums = [], total = 0, limit = 10, offset = 0}  = { ...action.payload };
+      .addCase(listFavoritesAlbumsAsync.fulfilled, (state, action) => {
+        const  { favoritesAlbums = [], total = 0, limit = 10, offset = 0}  = { ...action.payload };
         const current = offset/limit + 1;
-        state.pagination =  {pageSize: limit, current, total};
-        state.albums = albums;
+        state.favoritesPagination =  {pageSize: limit, current, total};
+        state.favoritesAlbums = favoritesAlbums;
         state.status = 'idle';
       });
   },
@@ -78,6 +86,13 @@ export const selectAlbums = (state: RootState) => {
   const { album } = state
   const { pagination, albums } = album
   return { albums, pagination};
+  
+};
+
+export const selectFavoritesAlbums = (state: RootState) => {
+  const { album } = state
+  const { favoritesAlbums, favoritesPagination } = album
+  return { favoritesAlbums, favoritesPagination };
   
 };
 export default albumSlice.reducer;
